@@ -1,0 +1,59 @@
+---
+title: "baby-names-28-2-2020"
+author: "Carine Hajjar"
+date: "1/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(babynames)
+library(tidyverse)
+library(ggplot2)
+library(tidyr)
+
+```
+
+
+```{r}
+
+x <- babynames%>%
+  filter(year == "2017")%>%
+  arrange(desc(n))%>%
+  head(10)
+
+
+babynames
+
+
+
+top_100 <- babynames %>% 
+  filter(year == max(year))%>%
+  group_by(name)%>%
+  summarise(total = sum(n))%>%
+  arrange(desc(total))%>%
+  slice(1:100)
+
+# join with old data set but use just these 100 names
+
+join_name <- babynames%>%
+  inner_join(top_100, by = "name")
+
+total_per_name <- join_name %>%
+  group_by(year, name)%>%
+  summarise(total_name = sum(n))
+
+total_per_name%>%
+  filter(name == "Emma")%>%
+  ggplot(aes(year, total_name))+
+  geom_col()
+
+
+```
+
+
+
+
+
+
