@@ -33,7 +33,7 @@ top_100 <- babynames %>%
   group_by(name)%>%
   summarise(total = sum(n))%>%
   arrange(desc(total))%>%
-  slice(1:100)
+  slice(1:1000)
 
 # join with old data set but use just these 100 names
 
@@ -53,7 +53,18 @@ total_per_name%>%
 ```
 
 
+```{r}
+x <- babynames %>%
+  inner_join(top_100, by = "name")
 
 
+x %>%
+  filter(name == "Mary") %>%
+  filter(sex == "F") %>%
+  ggplot(aes(year, n)) +
+    geom_line()
+
+  
+```
 
 
